@@ -1,0 +1,97 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Book Management</title>
+</head>
+<body>
+    <h1>Book Management</h1>
+
+    <!-- Form for creating/updating books -->
+    <form id="bookForm" method="POST">
+        <label for="authors_first_name">Author's First Name:</label>
+        <input type="text" name="authors_first_name" id="authors_first_name" required><br>
+
+        <label for="authors_last_name">Author's Last Name:</label>
+        <input type="text" name="authors_last_name" id="authors_last_name" required><br>
+
+        <label for="book_title">Book Title:</label>
+        <input type="text" name="book_title" id="book_title" required><br>
+
+        <label for="genre">Genre:</label>
+        <input type="text" name="genre" id="genre" required><br>
+
+        <label for="pages">Pages:</label>
+        <input type="number" name="pages" id="pages" required><br>
+
+        <!-- Hidden field for book ID (for updating) -->
+        <input type="hidden" name="book_id" id="book_id" value="">
+        
+        <!-- Hidden field for indicating create/update action -->
+        <input type="hidden" name="action" id="action" value="create">
+
+        <input type="hidden" name="x-access-token" value="your_access_token_here">
+
+        <!-- Button to submit the form for adding or updating a book -->
+        <button type="submit" id="submitBtn">Add/Update Book</button>
+    </form>
+
+    <hr>
+
+    <!-- Delete button for deleting a book -->
+    <div id="deleteButtonContainer"></div>
+
+    <script>
+        // Function to handle form submission for creating/updating books
+        document.getElementById('bookForm').addEventListener('submit', function(event) {
+            event.preventDefault(); // Prevent default form submission
+            var formData = new FormData(this);
+            var bookId = formData.get('book_id');
+            var action = formData.get('action');
+
+            var xhttp = new XMLHttpRequest();
+            xhttp.onreadystatechange = function() {
+                if (this.readyState == 4 && this.status == 200) {
+                    alert('Book ' + (action === 'create' ? 'added' : 'updated') + ' successfully.');
+                    // Optionally, update the UI or redirect as needed
+                }
+            };
+            xhttp.open(action === 'create' ? 'POST' : 'PUT', `/library/${bookId}`, true);
+            xhttp.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded');
+            xhttp.send(new URLSearchParams(formData).toString());
+        });
+
+        // Function to handle book deletion
+        function deleteBook(bookId) {
+            if (confirm('Are you sure you want to delete this book?')) {
+                var xhttp = new XMLHttpRequest();
+                xhttp.onreadystatechange = function() {
+                    if (this.readyState == 4 && this.status == 200) {
+                        document.getElementById('bookItem_' + bookId).remove(); // Remove the book item from the UI
+                        alert('Book deleted successfully.');
+                    }
+                };
+                xhttp.open('DELETE', `/library/${bookId}`, true);
+                xhttp.send();
+            }
+        }
+
+        // Example usage to populate delete buttons (replace with actual book data)
+        var booksData = [
+            { id: 1, title: 'Book One', author: 'John Doe' },
+            { id: 2, title: 'Book Two', author: 'Jane Smith' },
+            // Add more book data as needed
+        ];
+
+        // Populate delete buttons for each book
+        var deleteButtonContainer = document.getElementById('deleteButtonContainer');
+        booksData.forEach(function(book) {
+            var deleteButton = document.createElement('button');
+            deleteButton.textContent = 'Delete ' + book.title;
+            deleteButton.addEventListener('click', function() {
+                deleteBook(book.id);
+            });
+            deleteButtonContainer.appendChild(deleteButton);
+        });
+    </script>
+</body>
+</html>
