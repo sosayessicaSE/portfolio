@@ -1,66 +1,81 @@
-from flask import Blueprint, request, jsonify, render_template
+from flask import Blueprint, request, jsonify
 from helpers import token_required
 from models import db, User, Book, book_schema, books_schema
 
 api = Blueprint('api', __name__)
 
 
-# Library form
-@api.route('/library-form')
-def library_form():
-    return render_template('libraryform.html')
-
-# Creating
-@api.route('/library', methods=['POST'])
-@token_required
-def create_book(current_user_token):
-    # Retrieve form data
-    authors_first_name = request.form['authors_first_name']
-    authors_last_name = request.form['authors_last_name']
-    book_title = request.form['book_title']
-    genre = request.form['genre']
-    pages = request.form['pages']
-
-    # Get the current user object
-    current_user = User.query.filter_by(token=current_user_token).first()
-    if not current_user:
-        return jsonify({'message': 'User not found.'}), 404
-
-    # Create a new book instance associated with the current user
-    book = Book(
-        authors_first_name=authors_first_name,
-        authors_last_name=authors_last_name,
-        book_title=book_title,
-        genre=genre,
-        pages=pages,
-        user_token=current_user_token,
-        user=current_user
-    )
-
-    # Add the new book to the database session and commit it
-    db.session.add(book)
-    db.session.commit()
-
-    # Serialize the book object using the schema
-    response = book_schema.dump(book)
-    return jsonify(response)
-
-# Retrieve user's books
-@api.route('/library', methods=['GET'])
-@token_required
-def get_all_books(current_user_token):
-    a_user = current_user_token
-    books = Book.query.filter_by(user_token=a_user).all()
-    return render_template('library.html', books=books)
-
 # Retrieving single
 @api.route('/library/<id>', methods=['GET'])
 @token_required
 def get_single_book(current_user_token, id):
     book = Book.query.get(id)
-    return render_template('library.html', book=book, single_book=True)
+    return jsonify(book_schema.dump(book))
 
-@api.route('/library/<id>', methods=['POST', 'PUT'])
+# Creating
+# Creating
+# Creating
+@api.route('/library/add', methods=['POST'])
+@token_required
+def add_book_to_library(current_user_token):
+    data = request.get_json()
+    
+    book_title = data.get('book_title')
+    authors_first_name = data.get('authors_first_name')
+    authors_last_name = data.get('authors_last_name')
+    genre = data.get('genre')
+    pages = data.get('pages')
+    
+    if not all([book_title, authors_first_name, authors_last_name, genre, pages]):
+        return jsonify({'message': 'Missing required data.'}), 400
+
+    # Check if the current_user_token is a User instance and is not None
+    if isinstance(current_user_token, User) and current_user_token:
+        # Create a new book instance and set its attributes
+        book = Book(
+            authors_first_name=authors_first_name,
+            authors_last_name=authors_last_name,
+            book_title=book_title,
+            genre=genre,
+            pages=pages,
+            user_id=current_user_token.id  # Set the user_id for the book
+        )
+        
+        try:
+            # Add the new book to the database
+            db.session.add(book)
+            db.session.commit()
+            return jsonify({'message': 'Book added successfully.'})
+        except Exception as e:
+            db.session.rollback()  # Rollback the session in case of an error
+            error_message = f'Error adding book: {str(e)}'
+            return jsonify({'message': error_message}), 500
+    else:
+        return jsonify({'message': 'Invalid user or user not found.'}), 404
+
+
+# Retrieve user's books
+@api.route('/library', methods=['GET'])
+@token_required
+def get_all_books(current_user_token):
+    # Ensure you extract the token string from the current_user_token object
+    user_token = current_user_token.token if current_user_token else None
+    
+    if user_token:
+        # Use the extracted user token to filter books
+        user = User.query.filter_by(token=user_token).first()
+        if user:
+            # Fetch books associated with the user
+            books = Book.query.filter_by(user_id=user.id).all()
+            books_list = [book.to_dict() for book in books]
+            return jsonify({'books': books_list})
+        else:
+            return jsonify({'message': 'User not found.'}), 404
+    else:
+        return jsonify({'message': 'User token not provided.'}), 400
+
+
+@api.route('/library/<id>', methods=['PUT'])
 @token_required
 def update_book(current_user_token, id):
     book = Book.query.get(id)
@@ -68,18 +83,16 @@ def update_book(current_user_token, id):
     if not book:
         return jsonify({'message': 'Book not found.'}), 404
 
-    # Update the book attributes based on the form data
-    book.authors_first_name = request.form.get('authors_first_name', book.authors_first_name)
-    book.authors_last_name = request.form.get('authors_last_name', book.authors_last_name)
-    book.book_title = request.form.get('book_title', book.book_title)
-    book.genre = request.form.get('genre', book.genre)
-    book.pages = request.form.get('pages', book.pages)
-    book.user_token = current_user_token.token
+    data = request.get_json()
+    book.authors_first_name = data.get('authors_first_name', book.authors_first_name)
+    book.authors_last_name = data.get('authors_last_name', book.authors_last_name)
+    book.book_title = data.get('book_title', book.book_title)
+    book.genre = data.get('genre', book.genre)
+    book.pages = data.get('pages', book.pages)
 
     db.session.commit()
 
-    response = book_schema.dump(book)
-    return jsonify(response)
+    return jsonify({'message': 'Book updated successfully.', 'data': book_schema.dump(book)})
 
 # Deleting a book
 @api.route('/library/<id>', methods=['DELETE'])

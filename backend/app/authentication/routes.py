@@ -1,56 +1,57 @@
-from forms import UserLoginForm
+from flask import Blueprint, request, jsonify
+from flask_login import login_user, logout_user, login_required, current_user
 from models import User, db, check_password_hash
-from flask import Blueprint, render_template, request, redirect, url_for, flash
-from flask_login import login_user, logout_user
 
-auth = Blueprint('auth', __name__, template_folder='auth_templates')
+auth = Blueprint('auth', __name__)
 
-@auth.route('/signup', methods = ['GET', 'POST'])
+@auth.route('/user', methods=['GET'])
+@login_required
+def get_user():
+    if current_user.is_authenticated:
+        user_data = {
+            'id': current_user.id,
+            'email': current_user.email,
+            # Include any other user data you want to expose
+        }
+        return jsonify(user_data), 200
+    else:
+        return jsonify({'error': 'User not authenticated'}), 401
+
+@auth.route('/signup', methods=['POST'])
 def signup():
-    form = UserLoginForm()
+    data = request.get_json()  # Get JSON data from the request
+    email = data.get('email')
+    password = data.get('password')
+
+    if not email or not password:
+        return jsonify({'error': 'Email and password are required'}), 400
 
     try:
-        if request.method == 'POST' and form.validate_on_submit():
-            email = form.email.data
-            password = form.password.data
-            print(email, password)
+        user = User(email=email, password=password)
+        db.session.add(user)
+        db.session.commit()
+        return jsonify({'message': 'User created successfully'}), 201
+    except Exception as e:
+        return jsonify({'error': str(e)}), 500
 
-            user = User(email, password = password)
-
-            db.session.add(user)
-            db.session.commit()
-
-
-
-            flash(f'You have successfully created a user account {email}', 'User-created')
-            return redirect(url_for('site.home'))
-    except:
-        raise Exception('Invalid form data: Please check your form')
-    return render_template('sign_up.html', form=form)
-
-@auth.route('/signin', methods = ['GET', 'POST'])
+@auth.route('/signin', methods=['POST'])
 def signin():
-    form = UserLoginForm()
-    
-    try:
-        if request.method == 'POST' and form.validate_on_submit():
-            email = form.email.data
-            password = form.password.data
-            print(email,password)
+    data = request.get_json()  # Get JSON data from the request
+    email = data.get('email')
+    password = data.get('password')
 
-            logged_user = User.query.filter(User.email == email).first()
-            if logged_user and check_password_hash(logged_user.password, password):
-                login_user(logged_user)
-                flash('You were successful in your initiation. Congratulations, and welcome to my portfolio', 'auth-success')
-                return redirect(url_for('site.home'))
-            else:
-                flash('You do not have access to this content.', 'auth-failed')
-                return redirect(url_for('auth.signin'))
-    except:
-        raise Exception('Invalid Form Data: Please Check your Form')
-    return render_template('sign_in.html', form=form)
+    if not email or not password:
+        return jsonify({'error': 'Email and password are required'}), 400
 
-@auth.route('/logout')
+    logged_user = User.query.filter_by(email=email).first()
+    if logged_user and check_password_hash(logged_user.password, password):
+        login_user(logged_user)
+        return jsonify({'message': 'Login successful'}), 200
+    else:
+        return jsonify({'error': 'Invalid credentials'}), 401
+
+@auth.route('/logout', methods=['POST'])
+@login_required
 def logout():
     logout_user()
-    return redirect(url_for('site.home'))
+    return jsonify({'message': 'Logged out successfully'}), 200
