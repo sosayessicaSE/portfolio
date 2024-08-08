@@ -1,0 +1,55 @@
+@font-face {
+  font-family: 'MyCustomFont';
+  src: url('../fonts/fonnts.com-Dream_Avenue.ttf') format('truetype');
+  font-weight: normal;
+  font-style: normal;
+}
+
+html, body {
+  margin: 0;
+  padding: 0;
+  height: 100%;
+  overflow: hidden;
+}
+
+.home-container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  min-height: 100vh; 
+  background-color: #1a1a1a; 
+  margin: 0;
+  padding: 0;
+  overflow: hidden;
+}
+
+.home-content {
+  text-align: center;
+  color: #ffffff;
+  font-family: 'MyCustomFont', sans-serif;
+}
+
+.home-image {
+  width: 100%;
+  max-width: 600px; 
+  height: auto;
+  max-height: 500px;
+  object-fit: cover;
+  margin-bottom: 20px;
+  transition: transform 0.3s ease; 
+}
+
+.home-image:hover {
+  transform: translateY(-5px);
+}
+
+.home-title {
+  font-size: 2em;
+  margin: 0;
+}
+
+.home-intro {
+  font-size: 1.2em;
+  color: #666;
+  margin: 0;
+}

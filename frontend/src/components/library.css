@@ -1,0 +1,61 @@
+.Library {
+    padding: 20px;
+    height: 100vh;
+    width: auto;
+    margin: 0 auto;
+    background-image: url("../images/library.jpg");
+    background-size: cover;
+    background-position: center;
+    background-repeat: no-repeat;
+    color: white; 
+    
+  }
+  
+  /* Style for the book list */
+  .book-list {
+    margin-top: 20%;
+    display: flex;
+    gap: 50px;
+    justify-content: center; 
+    align-items: center; 
+    flex-wrap: nowrap; 
+    overflow-x: auto; 
+    overflow: visible;
+  }
+  
+  /* Styles for each book item */
+  .book-item {
+    background-color: #fff;
+    border: 1px solid #e0e0e0;
+    border-radius: 8px;
+    padding: 15px;
+    width: 250px;
+    text-align: center;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+    
+  }
+  
+  .book-item:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 6px 12px rgba(0, 0, 0, 0.15);
+  }
+  
+  /* Placeholder styles */
+  .placeholder {
+    background-color: #000000b4;
+  }
+  
+  .book-title {
+    font-size: 1.2em;
+    font-weight: bold;
+    margin-bottom: 10px;
+    color: #ffffff;
+  }
+  
+  .book-author, .book-genre, .book-pages {
+    font-size: 0.9em;
+    color: #e4e4e4;
+    margin: 5px 0;
+  }
+  

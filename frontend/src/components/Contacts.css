@@ -1,0 +1,76 @@
+@font-face {
+    font-family: 'MyCustomFont';
+    src: url('../fonts/fonnts.com-Dream_Avenue.ttf') format('truetype');
+    font-weight: normal;
+    font-style: normal;
+  }
+  
+  .contacts-container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    min-height: 100vh;
+    background-color: #181818;
+    padding: 20px;
+    overflow: hidden;
+    background-size: cover;
+    background-position: center;
+    background-repeat: no-repeat;
+  }
+  
+  .contacts-content {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    background: #fff;
+    padding: 30px;
+    border-radius: 8px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    width: 100%;
+    max-width: 500px;
+  }
+  
+  .contacts-title {
+    font-size: 2.5em;
+    margin-bottom: 15px;
+    font-family: 'MyCustomFont';
+  }
+  
+  .contacts-intro {
+    font-size: 1.2em;
+    color: #666;
+    margin-bottom: 20px;
+  }
+  
+  .contacts-details {
+    width: 100%;
+  }
+  
+  .contact-item {
+    display: flex;
+    align-items: center;
+    margin-bottom: 20px;
+    font-size: 18px;
+    color: #333;
+  }
+  
+  .contact-item a {
+    color: inherit; 
+    text-decoration: none; 
+    transition: all 0.3s ease;
+  }
+  
+  .contact-item a:hover {
+    color: #616161; 
+  }
+  
+  .contact-icon {
+    font-size: 1.5em;
+    margin-right: 10px;
+    color: #1b1b1b;
+  }
+  
+  .contact-item p {
+    margin: 0;
+  }
+  

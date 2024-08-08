@@ -6,7 +6,10 @@ import Home from "./components/home";
 import SignupComponent from "./components/SignUp";
 import SigninComponent from "./components/SignIn";
 import LogoutComponent from "./components/LogOut";
-
+import Library from "./components/library";
+import Projects from "./components/projects";
+import AboutMe from "./components/aboutme";
+import Contacts from "./components/contacts";
 function App() {
   return (
     <Router>
@@ -18,6 +21,10 @@ function App() {
             <Route path="/signin" element={<SigninComponent />} />
             <Route path="/signup" element={<SignupComponent />} />
             <Route path="/logout" element={<LogoutComponent />} />{" "}
+            <Route path="/library" element={<Library />} />
+            <Route path="/projects" element={<Projects />} />
+            <Route path="/aboutme" element={<AboutMe />} />
+            <Route path="/contact" element={<Contacts />} />
           </Routes>
         </div>
       </AuthProvider>

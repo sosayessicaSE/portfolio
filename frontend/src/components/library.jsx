@@ -1,10 +1,11 @@
 import React, { useState, useEffect } from "react";
 
+import "./library.css";
+
 function Library() {
   const [books, setBooks] = useState([]);
 
   useEffect(() => {
-    // Fetching books from the Flask backend
     fetch("/library")
       .then((res) => {
         if (!res.ok) {
@@ -22,20 +23,42 @@ function Library() {
 
   return (
     <div className="Library">
-      <header className="Library-header">
-        <h1>Library</h1>
-        <div className="book-list">
-          {books.map((book) => (
+      <div className="book-list">
+        {books.length > 0 ? (
+          books.map((book) => (
             <div key={book.id} className="book-item">
-              <h3>{book.book_title}</h3>
-              <p>Author: {book.authors_first_name} {book.authors_last_name}</p>
-              <p>Genre: {book.genre}</p>
-              <p>Pages: {book.pages}</p>
-              <hr />
+              <h3 className="book-title">{book.book_title}</h3>
+              <p className="book-author">
+                Author: {book.authors_first_name} {book.authors_last_name}
+              </p>
+              <p className="book-genre">Genre: {book.genre}</p>
+              <p className="book-pages">Pages: {book.pages}</p>
             </div>
-          ))}
-        </div>
-      </header>
+          ))
+        ) : (
+          // Placeholder elements while waiting for data
+          <>
+            <div className="book-item placeholder">
+              <h3 className="book-title">Book Title Placeholder</h3>
+              <p className="book-author">Author Placeholder</p>
+              <p className="book-genre">Genre Placeholder</p>
+              <p className="book-pages">Pages Placeholder</p>
+            </div>
+            <div className="book-item placeholder">
+              <h3 className="book-title">Book Title Placeholder</h3>
+              <p className="book-author">Author Placeholder</p>
+              <p className="book-genre">Genre Placeholder</p>
+              <p className="book-pages">Pages Placeholder</p>
+            </div>
+            <div className="book-item placeholder">
+              <h3 className="book-title">Book Title Placeholder</h3>
+              <p className="book-author">Author Placeholder</p>
+              <p className="book-genre">Genre Placeholder</p>
+              <p className="book-pages">Pages Placeholder</p>
+            </div>
+          </>
+        )}
+      </div>
     </div>
   );
 }

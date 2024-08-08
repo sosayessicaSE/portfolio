@@ -1,0 +1,60 @@
+@font-face {
+  font-family: 'MyCustomFont';
+  src: url('../fonts/fonnts.com-Dream_Avenue.ttf') format('truetype');
+  font-weight: normal;
+  font-style: normal;
+}
+
+.navbar {
+    background-color: #292929;
+    padding: 10px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+  }
+  
+  .navbar ul {
+    list-style-type: none;
+    margin: 0;
+    padding: 0;
+    text-align: center;
+  }
+  
+  .navbar li {
+    display: inline-block;
+    margin-right: 10px;
+  }
+  
+  .navbar a {
+    text-decoration: none;
+    color: #f0f0f0;
+    padding: 8px 16px;
+    border-radius: 5px;
+    transition: color 0.3s ease-in-out;
+    font-family:Arial, Helvetica, sans-serif
+  }
+  
+  .navbar a:hover {
+    color: #8a8a8a;
+  }
+  
+  .navbar .logo {
+    width: 80px; 
+    height: auto;
+    margin-left: 20px;
+  }
+  
+  .navbar .logout-btn {
+    background-color: #64000a;
+    color: #fff;
+    border: none;
+    padding: 8px 16px;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: background-color 0.3s ease-in-out;
+  }
+  
+  .navbar .logout-btn:hover {
+    background-color: #2e0005;
+  }
+  
