@@ -1,6 +1,6 @@
 import React from 'react';
 import './Home.css'; 
-import profileImage from '../images/profile.png'; // Asegúrate de tener una imagen de perfil en la carpeta correcta
+import profileImage from '../images/profile.png'; 
 
 const Home = () => {
   return (

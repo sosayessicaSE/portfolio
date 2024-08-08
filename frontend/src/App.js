@@ -10,17 +10,18 @@ import Library from "./components/library";
 import Projects from "./components/projects";
 import AboutMe from "./components/aboutme";
 import Contacts from "./components/contacts";
+
 function App() {
   return (
-    <Router>
+    <Router basename="/Portfoliohosted">
       <AuthProvider>
         <div className="App">
           <Navbar />
           <Routes>
-            <Route path="/home" element={<Home />} />
+            <Route path="/" element={<Home />} />
             <Route path="/signin" element={<SigninComponent />} />
             <Route path="/signup" element={<SignupComponent />} />
-            <Route path="/logout" element={<LogoutComponent />} />{" "}
+            <Route path="/logout" element={<LogoutComponent />} />
             <Route path="/library" element={<Library />} />
             <Route path="/projects" element={<Projects />} />
             <Route path="/aboutme" element={<AboutMe />} />

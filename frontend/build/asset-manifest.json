@@ -1,0 +1,23 @@
+{
+  "files": {
+    "main.css": "/Portfoliohosted/static/css/main.aeee221c.css",
+    "main.js": "/Portfoliohosted/static/js/main.bf12fa8d.js",
+    "static/js/453.8ab44547.chunk.js": "/Portfoliohosted/static/js/453.8ab44547.chunk.js",
+    "static/media/librarygif.gif": "/Portfoliohosted/static/media/librarygif.caad40c70fdb5c042f2f.gif",
+    "static/media/aboutmebg.png": "/Portfoliohosted/static/media/aboutmebg.dbdbe6596e35c9b9058c.png",
+    "static/media/library.jpg": "/Portfoliohosted/static/media/library.70ec97a63ad86e40f040.jpg",
+    "static/media/background.png": "/Portfoliohosted/static/media/background.af53868fdc93087ed95c.png",
+    "static/media/fonnts.com-Dream_Avenue.ttf": "/Portfoliohosted/static/media/fonnts.com-Dream_Avenue.c5cd3fc9b0ec474ff098.ttf",
+    "static/media/plane.png": "/Portfoliohosted/static/media/plane.14e9f5ba7000ae7fd252.png",
+    "static/media/profile.png": "/Portfoliohosted/static/media/profile.1cf05707a0115bef9f19.png",
+    "static/media/logo.png": "/Portfoliohosted/static/media/logo.5de0e01efe7d913bb941.png",
+    "index.html": "/Portfoliohosted/index.html",
+    "main.aeee221c.css.map": "/Portfoliohosted/static/css/main.aeee221c.css.map",
+    "main.bf12fa8d.js.map": "/Portfoliohosted/static/js/main.bf12fa8d.js.map",
+    "453.8ab44547.chunk.js.map": "/Portfoliohosted/static/js/453.8ab44547.chunk.js.map"
+  },
+  "entrypoints": [
+    "static/css/main.aeee221c.css",
+    "static/js/main.bf12fa8d.js"
+  ]
+}
