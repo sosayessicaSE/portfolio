@@ -11,7 +11,6 @@ def get_user():
         user_data = {
             'id': current_user.id,
             'email': current_user.email,
-            # Include any other user data you want to expose
         }
         return jsonify(user_data), 200
     else:
@@ -19,7 +18,7 @@ def get_user():
 
 @auth.route('/signup', methods=['POST'])
 def signup():
-    data = request.get_json()  # Get JSON data from the request
+    data = request.get_json()  
     email = data.get('email')
     password = data.get('password')
 
@@ -36,7 +35,7 @@ def signup():
 
 @auth.route('/signin', methods=['POST'])
 def signin():
-    data = request.get_json()  # Get JSON data from the request
+    data = request.get_json()  
     email = data.get('email')
     password = data.get('password')
 

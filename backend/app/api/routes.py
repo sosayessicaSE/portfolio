@@ -5,16 +5,14 @@ from models import db, User, Book, book_schema, books_schema
 api = Blueprint('api', __name__)
 
 
-# Retrieving single
+
 @api.route('/library/<id>', methods=['GET'])
 @token_required
 def get_single_book(current_user_token, id):
     book = Book.query.get(id)
     return jsonify(book_schema.dump(book))
 
-# Creating
-# Creating
-# Creating
+
 @api.route('/library/add', methods=['POST'])
 @token_required
 def add_book_to_library(current_user_token):
@@ -29,25 +27,25 @@ def add_book_to_library(current_user_token):
     if not all([book_title, authors_first_name, authors_last_name, genre, pages]):
         return jsonify({'message': 'Missing required data.'}), 400
 
-    # Check if the current_user_token is a User instance and is not None
+    
     if isinstance(current_user_token, User) and current_user_token:
-        # Create a new book instance and set its attributes
+        
         book = Book(
             authors_first_name=authors_first_name,
             authors_last_name=authors_last_name,
             book_title=book_title,
             genre=genre,
             pages=pages,
-            user_id=current_user_token.id  # Set the user_id for the book
+            user_id=current_user_token.id  
         )
         
         try:
-            # Add the new book to the database
+            
             db.session.add(book)
             db.session.commit()
             return jsonify({'message': 'Book added successfully.'})
         except Exception as e:
-            db.session.rollback()  # Rollback the session in case of an error
+            db.session.rollback()  
             error_message = f'Error adding book: {str(e)}'
             return jsonify({'message': error_message}), 500
     else:
@@ -58,14 +56,14 @@ def add_book_to_library(current_user_token):
 @api.route('/library', methods=['GET'])
 @token_required
 def get_all_books(current_user_token):
-    # Ensure you extract the token string from the current_user_token object
+   
     user_token = current_user_token.token if current_user_token else None
     
     if user_token:
-        # Use the extracted user token to filter books
+       
         user = User.query.filter_by(token=user_token).first()
         if user:
-            # Fetch books associated with the user
+            
             books = Book.query.filter_by(user_id=user.id).all()
             books_list = [book.to_dict() for book in books]
             return jsonify({'books': books_list})
